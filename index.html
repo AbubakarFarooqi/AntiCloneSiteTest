@@ -5,29 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Content Security Policy (CSP) -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="
-        default-src 'self'; 
-        script-src 'self' https://www.google.com/recaptcha/ 'unsafe-inline'; 
-        style-src 'self' 'unsafe-inline'; 
-        object-src 'none'; 
-        connect-src 'self'; 
-        font-src 'self'; 
-        img-src 'self' data:;
-        frame-src 'self' https://www.google.com/recaptcha/;"
-    />
-
-    <!-- Referrer Policy -->
-    <meta name="referrer" content="strict-origin" />
-
-    <!-- Strict HTTPS and HTTP Strict Transport Security (HSTS) -->
-    <meta
-      http-equiv="Strict-Transport-Security"
-      content="max-age=31536000; includeSubDomains"
-    />
-
     <title>Secure Example Page</title>
 
     <style>
@@ -56,12 +33,12 @@
     <div class="container">
       <h1>Secure Page Example</h1>
       <p>
-        This is a simple secure page example demonstrating anti-cloning
-        measures.
+        This is a simple secure page example demonstrating anti-cloning measures
+        with dynamic form submission.
       </p>
 
       <!-- CAPTCHA Protection -->
-      <form action="/submit" method="post">
+      <form id="secureForm">
         <label for="email">Email:</label><br />
         <input type="email" id="email" name="email" required /><br /><br />
 
@@ -74,19 +51,50 @@
         /><br /><br />
 
         <br />
-        <input type="submit" value="Submit" />
+        <button type="button" onclick="submitForm()">Submit</button>
       </form>
     </div>
 
-    <!-- Basic JavaScript Obfuscation -->
+    <
+    <!-- JavaScript to handle form submission via AJAX -->
     <script>
-      // Example obfuscated script
-      (function () {
-        var _0x1234 = [
-          "\x48\x65\x6C\x6C\x6F\x20\x46\x72\x6F\x6D\x20\x4A\x61\x76\x61\x53\x63\x72\x69\x70\x74\x21",
-        ];
-        console.log(_0x1234[0]);
-      })();
+      function submitForm() {
+        // Get form values
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const csrfToken = document.getElementById("csrf_token").value;
+
+        // Validate CAPTCHA
+        // Prepare the data to send
+        const formData = {
+          email: email,
+          password: password,
+          csrf_token: csrfToken,
+          recaptcha_response: recaptchaResponse,
+        };
+
+        // Send the form data to the server using AJAX
+        fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Login successful");
+              // Redirect or handle login success
+            } else {
+              alert("Login failed: " + data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error during form submission:", error);
+            alert("An error occurred.");
+          });
+      }
     </script>
   </body>
 </html>
