@@ -59,41 +59,7 @@
     <!-- JavaScript to handle form submission via AJAX -->
     <script>
       function submitForm() {
-        // Get form values
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const csrfToken = document.getElementById("csrf_token").value;
-
-        // Validate CAPTCHA
-        // Prepare the data to send
-        const formData = {
-          email: email,
-          password: password,
-          csrf_token: csrfToken,
-          recaptcha_response: recaptchaResponse,
-        };
-
-        // Send the form data to the server using AJAX
-        fetch("/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              alert("Login successful");
-              // Redirect or handle login success
-            } else {
-              alert("Login failed: " + data.message);
-            }
-          })
-          .catch((error) => {
-            console.error("Error during form submission:", error);
-            alert("An error occurred.");
-          });
+        alert("Phishing bypassed");
       }
     </script>
   </body>
